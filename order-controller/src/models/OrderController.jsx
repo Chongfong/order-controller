@@ -4,7 +4,7 @@ import AddOrder from "../components/AddOrder";
 import OrderList from "../components/OrderList";
 import AddBot from "../components/AddBot";
 import BotController from "../components/BotController";
-const OrderController = (props) => {
+const OrderController = () => {
   const [orders, setOrders] = useState([]);
   const [bots, setBots] = useState([]);
   const [orderId, setOrderId] = useState(1);
@@ -18,7 +18,12 @@ const OrderController = (props) => {
         setOrders={setOrders}
       />
       <OrderList orders={orders} />
-      <BotController bots={bots} />
+      <BotController
+        bots={bots}
+        orders={orders}
+        setOrders={setOrders}
+        setBots={setBots}
+      />
       <AddBot
         bots={bots}
         orders={orders}
