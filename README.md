@@ -1,12 +1,3 @@
-## Hotcake Software Engineer Take Home Assignment
-Below is a take home assignment before the interview of the position. You are required to
-1. Understand the situation and use case. You may contact the interviewer for further clarification.
-2. Fork this repo and implement the requirement with your most familiar tools.
-3. Complete the requirement and perform your own testing.
-4. Provide documentation for the any part that you think is needed.
-5. Commit into your own github and share your repo with the interviewer.
-6. Bring the source code and functioning prototype to the interview session.
-
 ### Situation
 McDonald is transforming their business during COVID-19. They wish to build the automated cooking bots to reduce workforce and increase their efficiency. As one of the software engineer in the project. You task is to create an order controller which handle the order control flow. 
 
@@ -26,13 +17,34 @@ As below is part of the user story:
 6. When "- Bot" clicked, the newest bot should be destroyed. If the bot is processing an order, it should also stop the process. The order now back to "PENDING" and ready to process by other bot.
 7. No data persistance is needed for this prototype, you may perform all the process inside memory.
 
-### Functioning Prototype
-You may demostrate your final funtioning prototype with **one and only one** of the following method:
-- CLI application
-- UI application
-- E2E test case
+### Techniques
 
-### Tips on completing this task
-- Testing, testing and testing. Make sure the prototype is functioning and meeting all the requirements.
-- Do not over engineering. Try to scope your working hour within 3 hours (1 hour per day). You may document all the optimization or technology concern that you think good to bring in the solution.
-- Complete the implementation as clean as possible, clean code is a strong plus point, do not bring in all the fancy tech stuff.
+- Front-End Fundamental
+  - HTML / CSS / JavaScript
+- Frameworks & Library
+  - React (Hooks)
+- Others
+  - Version Control: Git / GitHub
+ 
+### Tech Note
+
+1. Control orders by each bot
+2. Check the status of each bot every second (with interval)
+3. Keep the PENDING and DOING orders on display
+
+### Components
+
+| Components  | Description |
+| ----- | -------- |
+| AddBot | handle adding and removing bots |
+| AddOrder | handle adding new orders |
+| BotController | handle the processing of orders by the bots |
+| OrderList | display the pending and complete orders |
+| OrderController | manage the state and integrate the other components |
+
+
+### Quick Start
+
+1. Copy the content of root folder to your project folder.
+2. Run the cmd: `npm install` or `npm i`.
+3. Run the cmd: `npm run start`.
