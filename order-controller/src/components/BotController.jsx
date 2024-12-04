@@ -1,52 +1,57 @@
 import React, { useEffect, useCallback } from "react";
 
 const BotController = ({ bots, orders, setOrders, setBots }) => {
-  const processOrders = useCallback(() => {
-    let tempOrders = [...orders];
+  const updateOrderStatus = (orders, orderId, status) =>
+    orders.map((order) =>
+      order.id === orderId ? { ...order, status } : order
+    );
+
+  const processBots = useCallback(() => {
+    let updatedOrders = [...orders];
 
     const updatedBots = bots.map((bot) => {
-      if (
-        bot.status === "IDLE" &&
-        tempOrders.some((order) => order.status === "PENDING")
-      ) {
-        const nextOrder = tempOrders.find(
+      if (bot.status === "IDLE") {
+        const nextOrder = updatedOrders.find(
           (order) => order.status === "PENDING"
         );
-        tempOrders = tempOrders.map((order) =>
-          order.id === nextOrder.id ? { ...order, status: "DOING" } : order
-        );
-        setOrders(tempOrders);
-        return { ...bot, status: "BUSY", order: nextOrder, timeLeft: 10 };
+
+        if (nextOrder) {
+          updatedOrders = updateOrderStatus(
+            updatedOrders,
+            nextOrder.id,
+            "DOING"
+          );
+          return { ...bot, status: "BUSY", order: nextOrder, timeLeft: 10 };
+        }
       } else if (bot.status === "BUSY") {
         if (bot.timeLeft > 1) {
           return { ...bot, timeLeft: bot.timeLeft - 1 };
         } else {
-          tempOrders = tempOrders.map((order) =>
-            order.id === bot.order.id ? { ...order, status: "COMPLETE" } : order
+          updatedOrders = updateOrderStatus(
+            updatedOrders,
+            bot.order.id,
+            "COMPLETE"
           );
-          setOrders(tempOrders);
           return { ...bot, status: "IDLE", order: null, timeLeft: 0 };
         }
       }
       return bot;
     });
 
+    setOrders(updatedOrders);
     setBots(updatedBots);
-  }, [bots, orders, setBots, setOrders]);
+  }, [bots, orders, setOrders, setBots]);
 
   useEffect(() => {
-    if (
-      (orders.length > 0 &&
-        orders.some((order) => order.status === "PENDING") &&
-        bots.some((bot) => bot.status === "IDLE")) ||
-      bots.some((bot) => bot.status === "BUSY")
-    ) {
-      const interval = setInterval(() => {
-        processOrders();
-      }, 1000);
+    const hasPendingOrders = orders.some((order) => order.status === "PENDING");
+    const hasBusyBots = bots.some((bot) => bot.status === "BUSY");
+    const hasIdleBots = bots.some((bot) => bot.status === "IDLE");
+
+    if ((orders.length > 0 && hasPendingOrders && hasIdleBots) || hasBusyBots) {
+      const interval = setInterval(() => processBots(), 1000);
       return () => clearInterval(interval);
     }
-  }, [orders, bots, processOrders]);
+  }, [orders, bots, processBots]);
 
   return (
     <div>
