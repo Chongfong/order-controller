@@ -2,9 +2,11 @@ import React, { useState } from "react";
 
 import AddOrder from "../components/AddOrder";
 import OrderList from "../components/OrderList";
-import BotManager from "../components/BotManager";
+import AddBot from "../components/AddBot";
+import BotController from "../components/BotController";
 const OrderController = (props) => {
   const [orders, setOrders] = useState([]);
+  const [bots, setBots] = useState([]);
   const [orderId, setOrderId] = useState(1);
 
   return (
@@ -16,7 +18,13 @@ const OrderController = (props) => {
         setOrders={setOrders}
       />
       <OrderList orders={orders} />
-      <BotManager />
+      <BotController bots={bots} />
+      <AddBot
+        bots={bots}
+        orders={orders}
+        setOrders={setOrders}
+        setBots={setBots}
+      />
     </div>
   );
 };
