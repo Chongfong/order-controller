@@ -13,13 +13,18 @@ const AddBot = ({ setOrders, setBots, bots, orders }) => {
   };
 
   const removeBot = () => {
-    const doing = bots.at(-1).order;
-    setOrders(
-      [...orders].map((order) =>
-        order.id === doing.id ? { ...order, status: "PENDING" } : order
-      )
-    );
-    setBots((prevBots) => prevBots.slice(0, -1));
+    const doingBot = bots.at(-1);
+    if (doingBot.order) {
+      setOrders(
+        [...orders].map((order) =>
+          order.id === doingBot.order.id
+            ? { ...order, status: "PENDING" }
+            : order
+        )
+      );
+    }
+    const copiedBots = [...bots];
+    setBots(copiedBots.slice(0, -1));
   };
 
   return (
